@@ -1,0 +1,13 @@
+# Node.js Dependencies
+@babel/core==7.24.7
+@babel/plugin-transform-runtime==7.24.7
+@babel/preset-env==7.24.7
+@babel/register==7.24.6
+ethers==5.7.2
+mocha==10.0.0
+
+# Python Dependencies (example)
+flask==2.0.2
+requests==2.26.0
+
+#npm list --depth=0 > requirements.txt
