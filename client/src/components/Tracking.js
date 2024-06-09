@@ -1,27 +1,38 @@
-// src/components/Tracking.js
 import React, { useState } from 'react';
+import { productContractInstance } from '../utils/contractUtils';
 
 const Tracking = () => {
-  const [trackingInfo, setTrackingInfo] = useState(null);
+  const [productId, setProductId] = useState('');
+  const [product, setProduct] = useState(null);
 
-  const handleQRCodeScan = (data) => {
-    // Fetch tracking information from the blockchain using the data from the QR code
-    setTrackingInfo({
-      origin: 'Farm A',
-      productionDate: '2024-06-01',
-      methods: 'Organic farming practices',
-    });
+  const handleChange = (e) => {
+    setProductId(e.target.value);
+  };
+
+  const handleTrack = async () => {
+    const product = await productContractInstance.methods.getProduct(productId).call();
+    setProduct(product);
   };
 
   return (
-    <div className="tracking">
-      <h1>Track Your Blueberries</h1>
-      <input type="text" placeholder="Scan QR Code" onChange={(e) => handleQRCodeScan(e.target.value)} />
-      {trackingInfo && (
-        <div className="tracking-info">
-          <p>Origin: {trackingInfo.origin}</p>
-          <p>Production Date: {trackingInfo.productionDate}</p>
-          <p>Methods: {trackingInfo.methods}</p>
+    <div>
+      <h2>Track Product</h2>
+      <input
+        type="text"
+        value={productId}
+        onChange={handleChange}
+        placeholder="Enter Product ID"
+      />
+      <button onClick={handleTrack}>Track</button>
+
+      {product && (
+        <div>
+          <h3>Product Details</h3>
+          <p>Name: {product.name}</p>
+          <p>Description: {product.description}</p>
+          <p>Origin: {product.origin}</p>
+          <p>Production Date: {product.productionDate}</p>
+          <p>Farming Practices: {product.farmingPractices}</p>
         </div>
       )}
     </div>

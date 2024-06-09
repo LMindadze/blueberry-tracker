@@ -1,28 +1,45 @@
-// src/components/ProductList.js
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import web3 from '../web3';
+import { transactionContractInstance } from '../utils/contractUtils';
 
-const ProductList = () => {
-  const [products, setProducts] = useState([]);
+const ProductList = ({ products, onAddProduct }) => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Fetch products from the blockchain or a mock API
-    setProducts([
-      { id: 1, name: 'Blueberry Batch 1', description: 'Fresh blueberries from farm A' },
-      { id: 2, name: 'Blueberry Batch 2', description: 'Organic blueberries from farm B' },
-    ]);
-  }, []);
+  const handleBuyProduct = async (productId) => {
+    const accounts = await web3.eth.getAccounts();
+
+    try {
+      await transactionContractInstance.methods.buyProduct(productId).send({
+        from: accounts[0],
+        value: web3.utils.toWei('1', 'ether'), // Set the appropriate value
+        gasPrice: web3.utils.toWei('20', 'gwei') // Set a legacy gas price
+      });
+
+      alert('Product purchased successfully!');
+      navigate('/'); // Navigate back to the main page
+    } catch (error) {
+      console.error('Error purchasing product:', error);
+      alert('Error purchasing product. See console for details.');
+    }
+  };
 
   return (
-    <div className="product-list">
-      <h1>Available Blueberries</h1>
+    <div>
+      <h2>Product List</h2>
       <ul>
-        {products.map(product => (
+        {products.map((product) => (
           <li key={product.id}>
-            <Link to={`/product/${product.id}`}>{product.name}</Link>
+            <Link to={`/product/${product.id}`}>
+              {product.name}
+            </Link>
+            <button onClick={() => handleBuyProduct(product.id)}>Buy</button>
           </li>
         ))}
       </ul>
+      <Link to="/add-product">Add a new product</Link>
+      <Link to="/transactions">View Transactions</Link>
+      <Link to="/admin">Admin Panel</Link>
     </div>
   );
 };

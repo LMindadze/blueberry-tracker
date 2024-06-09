@@ -1,28 +1,35 @@
-// src/components/PurchaseForm.js
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import QRCode from 'qrcode.react';
+import { useParams } from 'react-router-dom';
+import { transactionContractInstance } from '../utils/contractUtils';
+import web3 from '../web3';
+import { Link } from 'react-router-dom';
 
 const PurchaseForm = () => {
   const { id } = useParams();
-  const [purchaseCompleted, setPurchaseCompleted] = useState(false);
+  const [account, setAccount] = useState('');
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
 
-  const handlePurchase = () => {
-    // Handle the purchase transaction with the blockchain
-    setPurchaseCompleted(true);
+  const handlePurchase = async () => {
+    const accounts = await web3.eth.getAccounts();
+    setAccount(accounts[0]);
+    try {
+      await transactionContractInstance.methods.purchaseProduct(id).send({
+        from: account,
+        value: web3.utils.toWei('1', 'ether'), // Adjust the value as needed
+      });
+      setPurchaseSuccess(true);
+    } catch (error) {
+      console.error("Purchase failed", error);
+      setPurchaseSuccess(false);
+    }
   };
 
   return (
-    <div className="purchase-form">
-      <Link to={`/product/${id}`} className="back-arrow">← Return to Product Details</Link>
-      <h1>Purchase Blueberry Batch {id}</h1>
-      <button onClick={handlePurchase}>Complete Purchase</button>
-      {purchaseCompleted && (
-        <div className="qr-code">
-          <h2>Purchase Successful!</h2>
-          <QRCode value={`https://example.com/tracking/${id}`} />
-        </div>
-      )}
+    <div>
+      <Link to={`/product/${id}`} className="back-arrow">&#8592; Back to Product</Link>
+      <h2>Purchase Product</h2>
+      <button onClick={handlePurchase}>Buy Product</button>
+      {purchaseSuccess && <p>Purchase successful!</p>}
     </div>
   );
 };
