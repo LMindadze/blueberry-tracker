@@ -6,6 +6,7 @@ import PurchaseForm from './components/PurchaseForm';
 import Tracking from './components/Tracking';
 import AddProductForm from './components/AddProductForm';
 import TransactionList from './components/TransactionList';
+import TransactionDetail from './components/TransactionDetail';
 import UpdateProductForm from './components/UpdateProductForm';
 import Admin from './components/Admin';
 import { productContractInstance } from './utils/contractUtils';
@@ -34,6 +35,7 @@ function App() {
 
   const handleAddProduct = (newProduct) => {
     setProducts((prevProducts) => [...prevProducts, { ...newProduct, id: prevProducts.length }]);
+    localStorage.setItem('products', JSON.stringify([...products, { ...newProduct, id: products.length }]));
   };
 
   return (
@@ -48,6 +50,7 @@ function App() {
           <Route path="/transactions" element={<TransactionList />} />
           <Route path="/update-product/:id" element={<UpdateProductForm />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/transactions/0" element={<TransactionDetail />} />
         </Routes>
       </div>
     </Router>

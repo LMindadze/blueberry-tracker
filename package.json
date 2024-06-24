@@ -4,7 +4,7 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/register": "^7.24.6",
     "chai": "^5.1.1",
-    "ethers": "^6.13.0",
+    "ethers": "^6.13.1",
     "mocha": "^10.0.0",
     "should": "^13.2.3"
   },
@@ -12,6 +12,9 @@
     "test": "mocha --require test/setup.js 'test/**/*.js'"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.1.15"
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "qrcode": "^1.5.3",
+    "qrcode.react": "^3.1.0",
+    "react-qr-reader": "^3.0.0-beta-1"
   }
 }

@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import web3 from '../web3';
-import { transactionContractInstance } from '../utils/contractUtils';
+import { transactionContractInstance, productContractInstance } from '../utils/contractUtils';
+import QRCode from 'qrcode.react';
 
-const ProductList = ({ products, onAddProduct }) => {
+const ProductList = ({ products }) => {
+  const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
 
   const handleBuyProduct = async (productId) => {
     const accounts = await web3.eth.getAccounts();
 
     try {
-      await transactionContractInstance.methods.buyProduct(productId).send({
+      const transaction = await transactionContractInstance.methods.buyProduct(productId).send({
         from: accounts[0],
         value: web3.utils.toWei('1', 'ether'), // Set the appropriate value
         gasPrice: web3.utils.toWei('20', 'gwei') // Set a legacy gas price
       });
+
+      const transactionId = transaction.events.ProductPurchased.returnValues.transactionId;
+      const qrValue = `http://localhost:3000/transaction/${transactionId}`;
+      const product = await productContractInstance.methods.getProduct(productId).call();
+
+      const newTransaction = {
+        id: transactionId,
+        productId,
+        qrValue,
+        buyer: accounts[0],
+        productName: product.name,
+        productDescription: product.description,
+        shippingStatus: 'Processing', // Initial status
+      };
+
+      setTransactions([...transactions, newTransaction]);
 
       alert('Product purchased successfully!');
       navigate('/'); // Navigate back to the main page

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { transactionContractInstance } from '../utils/contractUtils';
+import QRCode from 'qrcode.react';
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
@@ -8,13 +9,16 @@ const TransactionList = () => {
     const loadTransactions = async () => {
       try {
         const transactionCount = await transactionContractInstance.methods.transactionCount().call();
-        console.log('Transaction Count:', transactionCount);
-        
         let transactionList = [];
-        for (let i = 0; i < transactionCount; i++) {
+        for (let i = 0; i < Number(transactionCount); i++) {
           const transaction = await transactionContractInstance.methods.getTransaction(i).call();
-          console.log('Transaction:', transaction);
-          transactionList.push(transaction);
+          transactionList.push({
+            id: Number(transaction.id),
+            productId: Number(transaction.productId),
+            buyer: transaction.buyer,
+            purchaseTime: new Date(Number(transaction.purchaseTime) * 1000).toLocaleString(),
+            shippingStatus: transaction.shippingStatus
+          });
         }
         setTransactions(transactionList);
       } catch (error) {
@@ -33,7 +37,12 @@ const TransactionList = () => {
       <ul>
         {transactions.map((transaction, index) => (
           <li key={index}>
-            Transaction ID: {transaction.id} - Product ID: {transaction.productId} - Buyer: {transaction.buyer} - Purchase Time: {new Date(transaction.purchaseTime * 1000).toLocaleString()}
+            <p>Transaction ID: {transaction.id}</p>
+            <p>Product ID: {transaction.productId}</p>
+            <p>Buyer: {transaction.buyer}</p>
+            <p>Purchase Time: {transaction.purchaseTime}</p>
+            <p>Shipping Status: {transaction.shippingStatus}</p>
+            <QRCode value={`${window.location.origin}/transaction/${transaction.id}`} />
           </li>
         ))}
       </ul>
