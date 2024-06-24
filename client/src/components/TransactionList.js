@@ -17,7 +17,7 @@ const TransactionList = () => {
             productId: Number(transaction.productId),
             buyer: transaction.buyer,
             purchaseTime: new Date(Number(transaction.purchaseTime) * 1000).toLocaleString(),
-            shippingStatus: transaction.shippingStatus
+            shippingStatus: transaction.shippingStatus,
           });
         }
         setTransactions(transactionList);
