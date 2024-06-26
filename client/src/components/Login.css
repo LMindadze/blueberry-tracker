@@ -2,8 +2,7 @@
     width: 80%;
     max-width: 600px;
     height: auto;
-  
-    border: 2px solid #4caf50;
+    border: 2px solid black;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
     padding: 40px 20px;
@@ -52,9 +51,16 @@
 }
 
 #CustomerCantAddProduct {
-    color: #000000;
-    font-size: 50px;
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 200px;
+    color: #333333;
+    font-size: 36px;
+    font-weight: bold;
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    margin: 100px auto;
+    padding: 20px;
+    background: #f8f8f8;
+    border: 2px solid #4caf50;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
 }

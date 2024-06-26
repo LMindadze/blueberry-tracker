@@ -65,7 +65,7 @@ const ProductList = () => {
       localStorage.setItem('products', JSON.stringify(updatedProducts));
 
       alert('Product purchased successfully!');
-      navigate('/'); // Navigate back to the main page
+      navigate('/products');
     } catch (error) {
       console.error('Error purchasing product:', error);
       alert('Error purchasing product. See console for details.');

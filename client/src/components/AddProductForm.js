@@ -8,25 +8,24 @@ const AddProductForm = ({ onAddProduct }) => {
   const [origin, setOrigin] = useState('');
   const [productionDate, setProductionDate] = useState('');
   const [farmingPractices, setFarmingPractices] = useState('');
-  const [quantity, setQuantity] = useState(0); // New state for quantity
-  const [price, setPrice] = useState(''); // New state for price
+  const [quantity, setQuantity] = useState(0); 
+  const [price, setPrice] = useState('');
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newProduct = {
-      id: Date.now(), // Add an id to each product
+      id: Date.now(), 
       name,
       description,
       origin,
       productionDate,
       farmingPractices,
       quantity,
-      price // Add price to the product object
+      price 
     };
 
-    // Save to local storage
     const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
     localStorage.setItem('products', JSON.stringify([...storedProducts, newProduct]));
 
@@ -38,11 +37,10 @@ const AddProductForm = ({ onAddProduct }) => {
     setOrigin('');
     setProductionDate('');
     setFarmingPractices('');
-    setQuantity(0); // Reset quantity
-    setPrice(''); // Reset price
+    setQuantity(0); 
+    setPrice('');
 
-    // Navigate back to the main page
-    navigate('/');
+    navigate('/products');
   };
 
   return (
@@ -123,7 +121,7 @@ const AddProductForm = ({ onAddProduct }) => {
           />
         </div>
         <button type="submit" className="button">Add Product</button>
-        <button onClick={() => navigate('/')} className="backButton">Main Page</button>
+        <button onClick={() => navigate('/products')} className="backButton">Main Page</button>
       </form>
     </div>
   );
