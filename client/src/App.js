@@ -8,12 +8,14 @@ import AddProductForm from './components/AddProductForm';
 import TransactionList from './components/TransactionList';
 import TransactionDetail from './components/TransactionDetail';
 import UpdateProductForm from './components/UpdateProductForm';
-import Admin from './components/Admin';
+import Login from './components/Login';
+import CustomerCantAddProduct from './components/CustomerCantAddProduct';
 import { productContractInstance } from './utils/contractUtils';
 import './styles.css';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [isCustomer, setIsCustomer] = useState(false);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -41,15 +43,15 @@ function App() {
     <Router>
       <div className="container">
         <Routes>
-          <Route path="/" element={<ProductList products={products} onAddProduct={handleAddProduct} />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/purchase/:id" element={<PurchaseForm />} />
-          <Route path="/tracking" element={<Tracking />} />
-          <Route path="/add-product" element={<AddProductForm onAddProduct={handleAddProduct} />} />
-          <Route path="/transactions" element={<TransactionList />} />
-          <Route path="/update-product/:id" element={<UpdateProductForm />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/transaction/:id" element={<TransactionDetail />} />
+            <Route path="/" element={<Login setIsCustomer={setIsCustomer}/>} />
+            <Route path="/products" element={<ProductList products={products} onAddProduct={handleAddProduct} />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/purchase/:id" element={<PurchaseForm />} />
+            <Route path="/tracking" element={<Tracking />} />
+            <Route path="/add-product" element={(isCustomer === false) ? <AddProductForm onAddProduct={handleAddProduct} /> : <CustomerCantAddProduct />} />
+            <Route path="/transactions" element={<TransactionList />} />
+            <Route path="/update-product/:id" element={<UpdateProductForm />} />
+            <Route path="/transaction/:id" element={<TransactionDetail />} />
         </Routes>
       </div>
     </Router>

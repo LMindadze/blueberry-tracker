@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './AddProductForm.css';
 
 const AddProductForm = ({ onAddProduct }) => {
   const [name, setName] = useState('');
@@ -7,18 +8,27 @@ const AddProductForm = ({ onAddProduct }) => {
   const [origin, setOrigin] = useState('');
   const [productionDate, setProductionDate] = useState('');
   const [farmingPractices, setFarmingPractices] = useState('');
+  const [quantity, setQuantity] = useState(0); // New state for quantity
+  const [price, setPrice] = useState(''); // New state for price
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newProduct = {
+      id: Date.now(), // Add an id to each product
       name,
       description,
       origin,
       productionDate,
-      farmingPractices
+      farmingPractices,
+      quantity,
+      price // Add price to the product object
     };
+
+    // Save to local storage
+    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    localStorage.setItem('products', JSON.stringify([...storedProducts, newProduct]));
 
     onAddProduct(newProduct);
 
@@ -28,60 +38,94 @@ const AddProductForm = ({ onAddProduct }) => {
     setOrigin('');
     setProductionDate('');
     setFarmingPractices('');
+    setQuantity(0); // Reset quantity
+    setPrice(''); // Reset price
 
     // Navigate back to the main page
     navigate('/');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Description:</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Origin:</label>
-        <input
-          type="text"
-          value={origin}
-          onChange={(e) => setOrigin(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Production Date:</label>
-        <input
-          type="date"
-          value={productionDate}
-          onChange={(e) => setProductionDate(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Farming Practices:</label>
-        <input
-          type="text"
-          value={farmingPractices}
-          onChange={(e) => setFarmingPractices(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
+    <div className="container">
+      <h2 className="header">Add a Product</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="formGroup">
+          <label className="label">Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Description:</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Origin:</label>
+          <input
+            type="text"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Production Date:</label>
+          <input
+            type="date"
+            value={productionDate}
+            onChange={(e) => setProductionDate(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Farming Practices:</label>
+          <input
+            type="text"
+            value={farmingPractices}
+            onChange={(e) => setFarmingPractices(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Quantity:</label>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            required
+            className="input"
+            min="0"
+          />
+        </div>
+        <div className="formGroup">
+          <label className="label">Price (in ETH):</label>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            className="input"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <button type="submit" className="button">Add Product</button>
+        <button onClick={() => navigate('/')} className="backButton">Main Page</button>
+      </form>
+    </div>
   );
 };
 

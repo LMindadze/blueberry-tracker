@@ -1,0 +1,60 @@
+#Login {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+  
+    border: 2px solid #4caf50;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 70px;
+}
+
+#LoginAs {
+    font-size: 28px;
+    padding-bottom: 30px;
+    color: black;
+}
+
+#Customer, #Farmer {
+    width: 70%;
+    color: #ffffff;
+    margin: 10px;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    font-size: 22px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#Customer:hover, #Farmer:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+#Customer:focus, #Farmer:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px #45a049;
+}
+
+#Farmer {
+    background-color: #f44336;
+}
+
+#Customer {
+    background-color: #2196f3;
+}
+
+#CustomerCantAddProduct {
+    color: #000000;
+    font-size: 50px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 200px;
+}

@@ -15,7 +15,7 @@ const PurchaseForm = () => {
     try {
       await transactionContractInstance.methods.purchaseProduct(id).send({
         from: account,
-        value: web3.utils.toWei('1', 'ether'), // Adjust the value as needed
+        value: web3.utils.toWei('1', 'ether'),
       });
       setPurchaseSuccess(true);
     } catch (error) {
